@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://olegbirykov.github.io/react-11/",
   "dependencies": {
+    "babel": "^6.23.0",
     "nanoid": "^2.1.4",
     "prop-types": "^15.7.2",
     "push-dir": "^0.4.1",

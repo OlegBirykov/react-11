@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchServices, deleteService } from '../actions/actionCreators';
 
@@ -12,7 +12,7 @@ function ServiceList(props) {
   }, [dispatch]);
 
   const handleError = () => {
-    history.go(0);
+    fetchServices(dispatch);
   }
 
   const handleEdit = id => {

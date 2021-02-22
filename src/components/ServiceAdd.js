@@ -1,11 +1,28 @@
-import React from 'react';
+import {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeServiceField, addService } from '../actions/actionCreators';
+import { changeServiceField, editService, addService, addServiceFinish } from '../actions/actionCreators';
 
 function ServiceAdd(props) {
-  const { history } = props;
-  const { item, loading, error } = useSelector(state => state.serviceAdd);
+  const { history, match } = props;
+  const { item, loading, loadingError, adding, addingError, finish } = useSelector(state => state.serviceAdd);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    editService(dispatch, match.params.id);
+  }, [dispatch, match.params.id]);
+
+  useEffect(() => {
+    console.log(finish);
+    if (finish) {
+      dispatch(addServiceFinish());
+      history.push(process.env.PUBLIC_URL + '/services');      
+    };
+  // eslint-disable-next-line
+  }, [finish]);
+
+  const handleError = () => {
+    editService(dispatch, match.params.id);
+  }
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -18,11 +35,24 @@ function ServiceAdd(props) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    addService(dispatch, item.name, item.price);
+    addService(dispatch, item);
   }
 
-  if (error) {
-    return <p className="error">{error}</p>;
+  if (loadingError) {
+    return (
+      <>
+        <p className="error">{loadingError}</p>
+        <button className="error-button" onClick={handleError}>Попробовать ещё раз</button>
+      </>
+    )
+  }
+
+  if (loading) {
+    return (
+      <svg className="spinner ServiceAdd-spinner" viewBox="0 0 50 50">
+        <circle className="spinner-circle ServiceAdd-spinner-circle" cx="25" cy="25" r="20" fill="none"></circle>
+      </svg>
+    )
   }
 
   return (
@@ -37,12 +67,13 @@ function ServiceAdd(props) {
       </label>
       <label>
         Описание
-        <input name='content' value={item.content} />
+        <input name='content' onChange={handleChange} value={item.content} />
       </label>
       <div className="ServiceAdd-buttons">
-        <button className="ServiceAdd-button-cancel" disabled={loading} onClick={handleCancel}>Отмена</button>
-        <button className="ServiceAdd-button-save" type='submit' disabled={loading}>Сохранить</button>
+        <button className="ServiceAdd-button-cancel" disabled={adding} onClick={handleCancel}>Отмена</button>
+        <button className="ServiceAdd-button-save" type='submit' disabled={adding}>Сохранить</button>
       </div>
+      {addingError && <p className="ServiceAdd-error">{addingError}</p>}
     </form>
   );
 }

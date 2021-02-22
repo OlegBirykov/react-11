@@ -5,13 +5,14 @@ import {
   DELETE_SERVICE_REQUEST,
   DELETE_SERVICE_FAILURE,
   REMOVE_SERVICE,
-//  EDIT_SERVICE_REQUEST,
-//  EDIT_SERVICE_FAILURE,
-//  EDIT_SERVICE_SUCCESS,
+  EDIT_SERVICE_REQUEST,
+  EDIT_SERVICE_FAILURE,
+  EDIT_SERVICE_SUCCESS,
   CHANGE_SERVICE_FIELD,
   ADD_SERVICE_REQUEST,
   ADD_SERVICE_FAILURE,
   ADD_SERVICE_SUCCESS,
+  ADD_SERVICE_FINISH,
 } from './actionTypes';
 
 export const fetchServicesRequest = () => ({
@@ -53,6 +54,24 @@ export const removeService = id => ({
   },
 });
 
+export const editServiceRequest = () => ({
+  type: EDIT_SERVICE_REQUEST,
+});
+
+export const editServiceFailure = loadingError => ({
+  type: EDIT_SERVICE_FAILURE,
+  payload: {
+    loadingError,
+  },  
+});
+
+export const editServiceSuccess = item => ({
+  type: EDIT_SERVICE_SUCCESS,
+  payload: {
+    item,
+  },
+});
+
 export const changeServiceField = (name, value) => ({
   type: CHANGE_SERVICE_FIELD,
   payload: {
@@ -61,23 +80,28 @@ export const changeServiceField = (name, value) => ({
   },
 });
 
-export const addServiceRequest = (name, price) => ({
+export const addServiceRequest = (name, price, content) => ({
   type: ADD_SERVICE_REQUEST,
   payload: {
     name,
     price,
+    content,
   },
 })
 
-export const addServiceFailure = error => ({
+export const addServiceFailure = addingError => ({
   type: ADD_SERVICE_FAILURE,
   payload: {
-    error,
+    addingError,
   },
 });
 
 export const addServiceSuccess = () => ({
   type: ADD_SERVICE_SUCCESS,
+});
+
+export const addServiceFinish = () => ({
+  type: ADD_SERVICE_FINISH,
 });
 
 export const fetchServices = async dispatch => {
@@ -109,13 +133,27 @@ export const deleteService = async (dispatch, id) => {
   }
 }
 
-export const addService = async (dispatch, name, price) => {
+export const editService = async (dispatch, id) => {
+  dispatch(editServiceRequest());
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/${id}`)
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const data = await response.json();
+    dispatch(editServiceSuccess(data));
+  } catch (e) {
+    dispatch(editServiceFailure(e.message));
+  }
+}
+
+export const addService = async (dispatch, item) => {
   dispatch(addServiceRequest());
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, price }),
+      body: JSON.stringify(item),
     })
     if (!response.ok) {
       throw new Error(response.statusText);

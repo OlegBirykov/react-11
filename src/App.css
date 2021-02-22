@@ -76,11 +76,11 @@ button:hover {
   list-style: none; 
 }
 
-.ServiceList-spinner {
+.ServiceList-spinner, .ServiceAdd-spinner {
   width: 50px;
 }
 
-.ServiceList-spinner-circle {
+.ServiceList-spinner-circle, .ServiceAdd-spinner-circle {
   stroke: rgb(221, 56, 70);
 }
 

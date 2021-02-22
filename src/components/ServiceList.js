@@ -16,7 +16,6 @@ function ServiceList(props) {
   }
 
   const handleRemove = id => {
-    console.log('нажали');
     deleteService(dispatch, id);
   }
 

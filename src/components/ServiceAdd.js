@@ -4,11 +4,11 @@ import { changeServiceField, addService } from '../actions/actionCreators';
 
 function ServiceAdd(props) {
   const { history } = props;
-  const {item, loading, error} = useSelector(state => state.serviceAdd);
+  const { item, loading, error } = useSelector(state => state.serviceAdd);
   const dispatch = useDispatch();
 
   const handleChange = evt => {
-    const {name, value} = evt.target;
+    const { name, value } = evt.target;
     dispatch(changeServiceField(name, value));
   };
 

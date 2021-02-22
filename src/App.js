@@ -6,12 +6,12 @@ import ServiceList from './components/ServiceList';
 function App() {
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL} >
       <div className="App">
         <Switch>
-          <Route path={process.env.PUBLIC_URL + '/services/:id([0-9]+)'} component={ServiceAdd} />
-          <Route path={process.env.PUBLIC_URL + '/services'} component={ServiceList} />
-          <Redirect to={process.env.PUBLIC_URL + '/services'} />
+          <Route path="/services/:id([0-9]+)" component={ServiceAdd} />
+          <Route path="/services" component={ServiceList} />
+          <Redirect to="/services" />
         </Switch>
       </div>
     </Router>

@@ -12,7 +12,7 @@ function ServiceList(props) {
   }, [dispatch]);
 
   const handleEdit = id => {
-    history.push(process.env.PUBLIC_URL + '/services/' + id);
+    history.push('/' + id);
   }
 
   const handleRemove = id => {

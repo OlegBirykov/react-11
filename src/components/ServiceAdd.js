@@ -13,7 +13,7 @@ function ServiceAdd(props) {
   };
 
   const handleCancel = () => {
-    history.push(process.env.PUBLIC_URL + '/services');
+    history.push('');
   }
 
   const handleSubmit = evt => {

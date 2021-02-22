@@ -3,6 +3,8 @@ import './App.css';
 import ServiceAdd from './components/ServiceAdd';
 import ServiceList from './components/ServiceList';
 
+console.log(process.env);
+
 function App() { 
   return (
     <Router basename="/react-11/services">

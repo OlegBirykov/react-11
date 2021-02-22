@@ -3,15 +3,14 @@ import './App.css';
 import ServiceAdd from './components/ServiceAdd';
 import ServiceList from './components/ServiceList';
 
-function App() {
-
+function App() { 
   return (
-    <Router basename={process.env.PUBLIC_URL} >
+    <Router basename="/react-11/services">
       <div className="App">
         <Switch>
-          <Route path="/services/:id([0-9]+)" component={ServiceAdd} />
-          <Route path="/services" component={ServiceList} />
-          <Redirect to="/services" />
+          <Route path="/:id([0-9]+)" component={ServiceAdd} />
+          <Route path="" component={ServiceList} />
+          <Redirect to="" />
         </Switch>
       </div>
     </Router>

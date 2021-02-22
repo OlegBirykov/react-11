@@ -11,6 +11,10 @@ function ServiceList(props) {
     fetchServices(dispatch);
   }, [dispatch]);
 
+  const handleError = () => {
+    history.go(0);
+  }
+
   const handleEdit = id => {
     history.push(process.env.PUBLIC_URL + '/services/' + id);
   }
@@ -20,7 +24,12 @@ function ServiceList(props) {
   }
 
   if (error) {
-    return <p className="error">{error}</p>;
+    return (
+      <>
+        <p className="error">{error}</p>
+        <button className="error-button" onClick={handleError}>Попробовать ещё раз</button>
+      </>
+    )
   }
 
   if (loading) {

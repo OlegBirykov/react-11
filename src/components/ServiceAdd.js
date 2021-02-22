@@ -40,7 +40,7 @@ function ServiceAdd(props) {
         <input name='content' value={item.content} />
       </label>
       <div className="ServiceAdd-buttons">
-        <button className="ServiceAdd-button-cancel" type='button' disabled={loading} onClick={handleCancel}>Отмена</button>
+        <button className="ServiceAdd-button-cancel" disabled={loading} onClick={handleCancel}>Отмена</button>
         <button className="ServiceAdd-button-save" type='submit' disabled={loading}>Сохранить</button>
       </div>
     </form>

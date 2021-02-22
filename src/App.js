@@ -7,12 +7,12 @@ console.log(process.env);
 
 function App() { 
   return (
-    <Router basename="/react-11/services">
+    <Router>
       <div className="App">
         <Switch>
-          <Route path="/:id([0-9]+)" component={ServiceAdd} />
-          <Route path="" component={ServiceList} />
-          <Redirect to="" />
+          <Route path="/react-11/services/:id([0-9]+)" component={ServiceAdd} />
+          <Route path="/react-11/services" component={ServiceList} />
+          <Redirect to="/react-11/services" />
         </Switch>
       </div>
     </Router>

@@ -12,6 +12,10 @@ button:hover {
   opacity: 0.65;
 }
 
+.button-disabled {
+  opacity: 0.65; 
+}
+
 .App {
   width: 450px;
   margin: 100px auto 0 auto;
@@ -155,7 +159,26 @@ button:hover {
 }
 
 .ServiceAdd-button-save {
+  position: relative;
   padding: 0.4em 1em 0.5em 1em;
   border-radius: 5px;
+}
+
+.ServiceAdd-button-spinner {
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  left: 20%;
+  right: 20%;
+}
+
+.ServiceAdd-button-spinner-circle {
+  stroke: white;
+  stroke-width: 10%;
+}
+
+.ServiceAdd-error {
+  margin-top: 1em;
+  color: red;
 }
 

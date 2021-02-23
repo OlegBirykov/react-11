@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeServiceField, editService, addService, addServiceFinish } from '../actions/actionCreators';
+import { changeServiceField, editService, addService, addServiceFailure, addServiceFinish } from '../actions/actionCreators';
 
 function ServiceAdd(props) {
   const { history, match } = props;
@@ -34,7 +34,31 @@ function ServiceAdd(props) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    addService(dispatch, item);
+    const service = {
+      id: item.id,
+      name: item.name.trim(),
+      price: typeof(item.price) === 'string' ? item.price.trim() : item.price,
+      content: item.content.trim(),
+    }
+
+    if (!service.name) {
+      dispatch(addServiceFailure('Поле "Название" не должно быть пустым'));
+      return;
+    }
+
+    if (!service.price) {
+      dispatch(addServiceFailure('В поле "Стоимость" должно быть целое положительное число без пробелов'));
+      return;
+    }
+
+    service.price = Math.trunc(+service.price);
+
+    if (isNaN(service.price) || service.price <= 0) {
+      dispatch(addServiceFailure('В поле "Стоимость" должно быть целое положительное число без пробелов'));
+      return;      
+    } 
+
+    addService(dispatch, service);
   }
 
   if (loadingError) {
@@ -58,19 +82,34 @@ function ServiceAdd(props) {
     <form className="ServiceAdd" onSubmit={handleSubmit}>
       <label>
         Название
-        <input name='name' onChange={handleChange} value={item.name} />
+        <input name='name' disabled={adding} onChange={handleChange} value={item.name} />
       </label>
       <label>
         Стоимость
-        <input name='price' onChange={handleChange} value={item.price} />
+        <input name='price' disabled={adding} onChange={handleChange} value={item.price} />
       </label>
       <label>
         Описание
-        <input name='content' onChange={handleChange} value={item.content} />
+        <input name='content' disabled={adding} onChange={handleChange} value={item.content} />
       </label>
       <div className="ServiceAdd-buttons">
-        <button className="ServiceAdd-button-cancel" disabled={adding} onClick={handleCancel}>Отмена</button>
-        <button className="ServiceAdd-button-save" type='submit' disabled={adding}>Сохранить</button>
+        <button 
+          className={adding ? 'ServiceAdd-button-cancel button-disabled' : 'ServiceAdd-button-cancel'} 
+          onClick={handleCancel} 
+          disabled={adding}>
+          Отмена
+        </button>
+        <button 
+          className={adding ? 'ServiceAdd-button-save button-spinner' : 'ServiceAdd-button-save'} 
+          type='submit' 
+          disabled={adding}>
+          {adding ? 'С' : 'Сохранить'}
+          {adding &&
+            <svg className="spinner ServiceAdd-button-spinner" viewBox="0 0 50 50">
+              <circle className="spinner-circle ServiceAdd-button-spinner-circle" cx="25" cy="25" r="20" fill="none"></circle>
+            </svg> 
+          }
+        </button>
       </div>
       {addingError && <p className="ServiceAdd-error">{addingError}</p>}
     </form>

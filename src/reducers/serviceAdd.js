@@ -25,6 +25,8 @@ export default function serviceAddReducer(state = initialState, action) {
         ...state,
         loading: true,
         loadingError: null,
+        adding: false,
+        addingError: null,        
       };
 
     case EDIT_SERVICE_FAILURE:

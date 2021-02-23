@@ -12,7 +12,6 @@ function ServiceAdd(props) {
   }, [dispatch, match.params.id]);
 
   useEffect(() => {
-    console.log(finish);
     if (finish) {
       dispatch(addServiceFinish());
       history.push(process.env.PUBLIC_URL + '/services');      

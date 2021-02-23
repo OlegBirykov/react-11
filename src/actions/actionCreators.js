@@ -4,7 +4,7 @@ import {
   FETCH_SERVICES_SUCCESS,
   DELETE_SERVICE_REQUEST,
   DELETE_SERVICE_FAILURE,
-  REMOVE_SERVICE,
+  DELETE_SERVICE_SUCCESS,
   EDIT_SERVICE_REQUEST,
   EDIT_SERVICE_FAILURE,
   EDIT_SERVICE_SUCCESS,
@@ -47,8 +47,8 @@ export const deleteServiceFailure = error => ({
   },  
 });
 
-export const removeService = id => ({
-  type: REMOVE_SERVICE,
+export const deleteServiceSuccess = id => ({
+  type: DELETE_SERVICE_SUCCESS,
   payload: {
     id,
   },
@@ -127,7 +127,7 @@ export const deleteService = async (dispatch, id) => {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    dispatch(removeService(id));
+    dispatch(deleteServiceSuccess(id));
   } catch (e) {
     dispatch(deleteServiceFailure(e.message));
   }

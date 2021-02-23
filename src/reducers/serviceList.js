@@ -4,13 +4,14 @@ import {
   FETCH_SERVICES_SUCCESS,
   DELETE_SERVICE_REQUEST,
   DELETE_SERVICE_FAILURE,
-  REMOVE_SERVICE,
+  DELETE_SERVICE_SUCCESS,
 } from '../actions/actionTypes'
 
 const initialState = {
   items: [],
   loading: false,
   error: null,
+  deletingFinish: false,
 };
 
 export default function serviceListReducer(state = initialState, action) {
@@ -20,6 +21,7 @@ export default function serviceListReducer(state = initialState, action) {
         ...state,
         loading: true,
         error: null,
+        deletingFinish: false,
       };
 
     case FETCH_SERVICES_FAILURE:
@@ -61,12 +63,16 @@ export default function serviceListReducer(state = initialState, action) {
         };
       }
 
-    case REMOVE_SERVICE:
+    case DELETE_SERVICE_SUCCESS:
       {
         const { id } = action.payload;
-        return {
+        const result = {
           ...state,
-          items: state.items.filter(o => o.id !== id)
+          items: state.items.map(o => o.id === id ? { ...o, deleting: false, isDeleted: true } : o),
+        };
+        return {
+          ...result,
+          deletingFinish: result.items.reduce((flag, o) => flag && !o.deleting, true),
         };
       }
 
